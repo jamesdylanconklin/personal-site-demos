@@ -67,7 +67,7 @@ def combine_results(left_result, right_result, operator):
             if die in combined_rolls:
                 combined_rolls[die].extend(rolls)
             else:
-                combined_rolls[die] = rolls
+                combined_rolls[die] = [rolls]
 
     match operator:
         case '+':
