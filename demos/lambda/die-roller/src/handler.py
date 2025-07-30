@@ -78,8 +78,9 @@ def combine_results(left_result, right_result, operator):
         case '*':
             total = left_total * right_total
         case '/':
+            if right_total == 0:
+                raise ValueError("Division by zero is not allowed.")
             total = left_total // right_total
-
     return {
         "total": total,
         "rolls": combined_rolls
