@@ -38,7 +38,7 @@ def roll(num_dice, num_sides):
         num_sides (int): Number of sides on each die
         
     Returns:
-        dict: Contains 'rolls' list and 'total' sum
+        List of per-die roll results.
     """
     return [random.randint(1, num_sides) for _ in range(num_dice)]
 
@@ -53,7 +53,8 @@ def combine_results(left_result, right_result, operator):
         operator (str): Operator to apply ('+', '-', '*', '/')
         
     Returns:
-        int: Combined result
+       Dictionary of total => int and rolls => dict of roll strings to a list of their raw rolls.
+       e.g. {'total': 17, 'rolls': {'d8': [[3]], '3d6': [[2, 4, 5]]}}
     """
 
     left_total = left_result.get("total")
