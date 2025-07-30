@@ -2,6 +2,15 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
+# Common tags for all resources
+locals {
+  common_tags = {
+    Environment = var.environment
+    Project     = var.project_name
+    Component   = "die-roller"
+  }
+}
+
 # Create Lambda deployment package
 data "archive_file" "lambda_zip" {
   type        = "zip"
@@ -12,7 +21,7 @@ data "archive_file" "lambda_zip" {
 # Lambda function for die-roller
 resource "aws_lambda_function" "die_roller" {
   filename         = data.archive_file.lambda_zip.output_path
-  function_name    = "die-roller"
+  function_name    = "${var.project_name}-${var.environment}-die-roller"
   role            = aws_iam_role.die_roller_lambda_role.arn
   handler         = "handler.lambda_handler"
   runtime         = "python3.11"
@@ -22,11 +31,15 @@ resource "aws_lambda_function" "die_roller" {
     aws_iam_role_policy_attachment.die_roller_lambda_logs,
     aws_cloudwatch_log_group.die_roller,
   ]
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-${var.environment}-die-roller"
+  })
 }
 
 # IAM role for the Lambda function
 resource "aws_iam_role" "die_roller_lambda_role" {
-  name = "die-roller-lambda-role"
+  name = "${var.project_name}-${var.environment}-die-roller-lambda-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -40,6 +53,10 @@ resource "aws_iam_role" "die_roller_lambda_role" {
       }
     ]
   })
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-${var.environment}-die-roller-lambda-role"
+  })
 }
 
 # IAM policy attachment for basic Lambda execution
@@ -50,13 +67,17 @@ resource "aws_iam_role_policy_attachment" "die_roller_lambda_logs" {
 
 # CloudWatch log group for the Lambda function
 resource "aws_cloudwatch_log_group" "die_roller" {
-  name              = "/aws/lambda/die-roller"
+  name              = "/aws/lambda/${var.project_name}-${var.environment}-die-roller"
   retention_in_days = 14
+
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-${var.environment}-die-roller-logs"
+  })
 }
 
 # Lambda permission to allow API Gateway to invoke the function
 resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowExecutionFromAPIGateway"
+  statement_id  = "AllowExecutionFromAPIGateway-${var.project_name}-${var.environment}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.die_roller.function_name
   principal     = "apigateway.amazonaws.com"
