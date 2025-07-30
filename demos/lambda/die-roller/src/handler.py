@@ -122,15 +122,17 @@ def evaluate_roll_string(roll_string):
             "rolls": {}
         }
     
-    operator_match = re.search(r"[+-]", roll_string)
+    # Reverse string so we evaluate same-precedence operators left to right
+    operator_match = re.search(r"[+-]", roll_string[::-1])
 
     if operator_match is None:
-        operator_match = re.search(r"[/*]", roll_string)
+        operator_match = re.search(r"[/*]", roll_string[::-1])
 
     if operator_match is None:    
         raise ValueError(f"Invalid roll string: {roll_string}")
     
-    split_index = operator_match.start()
+    # Convert index-from-right to index-from-left
+    split_index = -1 - operator_match.start()
     left_part = roll_string[:split_index]
     right_part = roll_string[split_index + 1:]  
 
