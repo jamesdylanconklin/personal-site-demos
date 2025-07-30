@@ -101,8 +101,9 @@ def evaluate_roll_string(roll_string):
     Raises:
         ValueError: For invalid roll strings
     """ 
-    if re.match(PRIMITIVE_ROLL_PATTERN, roll_string):
-        num_dice, num_sides = re.match(PRIMITIVE_ROLL_PATTERN, roll_string).groups()
+    match = re.match(PRIMITIVE_ROLL_PATTERN, roll_string)
+    if match:
+        num_dice, num_sides = match.groups()
         if not num_dice:
             num_dice = 1
         else:
