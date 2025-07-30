@@ -67,10 +67,7 @@ def combine_results(left_result, right_result, operator):
           if die in combined_rolls:
               combined_rolls[die].append(rolls)
           else:
-              if isinstance(rolls[0], int):
-                  combined_rolls[die] = [rolls]
-              else:
-                  combined_rolls[die] = rolls
+              combined_rolls[die] = rolls
 
     match operator:
         case '+':
@@ -116,7 +113,7 @@ def evaluate_roll_string(roll_string):
 
         return {
             "total": sum(roll_result),
-            "rolls": { roll_string: roll_result }
+            "rolls": { roll_string: [roll_result] }
         }
     
     if re.match(r"^\d+$", roll_string):
