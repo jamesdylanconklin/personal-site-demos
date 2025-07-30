@@ -10,7 +10,7 @@ output "die_roller_roll_string_resource_id" {
 
 output "die_roller_execution_arn" {
   description = "The execution ARN for the die roller endpoints"
-  value       = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.parent_api_id}/*/*"
+  value       = "arn:aws:execute-api:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:${var.parent_api_id}/*/*"
 }
 
 output "lambda_function_name" {

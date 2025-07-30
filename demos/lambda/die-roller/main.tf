@@ -1,3 +1,7 @@
+# Get current AWS region and account ID
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+
 # Create Lambda deployment package
 data "archive_file" "lambda_zip" {
   type        = "zip"
@@ -56,12 +60,8 @@ resource "aws_lambda_permission" "api_gateway" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.die_roller.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.parent_api_id}/*/*"
+  source_arn    = "arn:aws:execute-api:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:${var.parent_api_id}/*/*"
 }
-
-# Data sources for AWS account info
-data "aws_region" "current" {}
-data "aws_caller_identity" "current" {}
 
 # API Gateway Resource for die-roller
 resource "aws_api_gateway_resource" "die_roller" {
