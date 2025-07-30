@@ -1,0 +1,53 @@
+# Terraform artifacts
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+terraform.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Sensitive configuration files
+.env
+.secrets
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+
+# AWS credentials and config
+.aws/
+aws-credentials
+credentials
+
+# Lambda deployment artifacts
+*.zip
+dist/
+build/
+
+# Python artifacts (for Lambda source)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
