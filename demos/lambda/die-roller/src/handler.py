@@ -3,6 +3,7 @@ import random
 import re
 
 PRIMITIVE_ROLL_PATTERN = r"^(\d*)d(\d+)$"
+MAX_NUM_DICE = 100
 
 
 def lambda_handler(event, _context):
@@ -106,6 +107,9 @@ def evaluate_roll_string(roll_string):
             num_dice = 1
         else:
             num_dice = int(num_dice)
+
+        if num_dice > MAX_NUM_DICE:
+            raise ValueError(f"Cannot roll more than {MAX_NUM_DICE} dice at once.")
         
         num_sides = int(num_sides)
 
