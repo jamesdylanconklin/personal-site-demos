@@ -68,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "die_roller_lambda_logs" {
 # CloudWatch log group for the Lambda function
 resource "aws_cloudwatch_log_group" "die_roller" {
   name              = "/aws/lambda/${var.project_name}-${var.environment}-die-roller"
-  retention_in_days = 14
+  retention_in_days = 1
 
   tags = merge(local.common_tags, {
     Name = "${var.project_name}-${var.environment}-die-roller-logs"
@@ -77,7 +77,7 @@ resource "aws_cloudwatch_log_group" "die_roller" {
 
 # Lambda permission to allow API Gateway to invoke the function
 resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowExecutionFromAPIGateway-${var.project_name}-${var.environment}"
+  statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.die_roller.function_name
   principal     = "apigateway.amazonaws.com"
