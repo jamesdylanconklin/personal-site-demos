@@ -15,7 +15,7 @@ resource "aws_lambda_function" "die_roller" {
   function_name    = "die-roller"
   role            = aws_iam_role.die_roller_lambda_role.arn
   handler         = "handler.lambda_handler"
-  runtime         = "python3.9"
+  runtime         = "python3.11"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   depends_on = [
