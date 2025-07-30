@@ -12,7 +12,9 @@ def lambda_handler(event, _context):
     Processes roll strings from API Gateway path parameters and returns
     either the roll results or validation errors.
     """
-    roll_string = event.get("pathParameters", {}).get("rollString", "1d20")
+    # Handle case where pathParameters is None (no path params in request)
+    path_params = event.get("pathParameters") or {}
+    roll_string = path_params.get("rollString", "1d20")
 
     try:
         result = evaluate_roll_string(roll_string)
@@ -93,8 +95,10 @@ def evaluate_roll_string(roll_string):
         
     Returns:
         dict: Contains 'total' and 'rolls' mapping
-              e.g. {'total': 17, 'rolls': {'d8': [3], '3d6': [2, 4, 5]}}
+              e.g. {'total': 17, 'rolls': {'d8': [[3]], '3d6': [[2, 4, 5]]}}
         
+        rolls mappings are lists of lists to allow for duplicate sub-rolls.
+        Should such exist, they will be ordered by their position in the roll string.      
     Raises:
         ValueError: For invalid roll strings
     """ 
