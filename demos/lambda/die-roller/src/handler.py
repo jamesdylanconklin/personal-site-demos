@@ -63,11 +63,11 @@ def combine_results(left_result, right_result, operator):
     combined_rolls = {}
 
     for raw_rolls in map(lambda result: result['rolls'], [left_result, right_result]):
-      for die, rolls in raw_rolls.items():
-          if die in combined_rolls:
-              combined_rolls[die].append(rolls)
-          else:
-              combined_rolls[die] = rolls
+        for die, rolls in raw_rolls.items():
+            if die in combined_rolls:
+                combined_rolls[die].append(rolls)
+            else:
+                combined_rolls[die] = rolls
 
     match operator:
         case '+':
