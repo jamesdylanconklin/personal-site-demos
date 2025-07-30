@@ -103,7 +103,6 @@ def evaluate_roll_string(roll_string):
     Raises:
         ValueError: For invalid roll strings
     """ 
-    print("Evaluating roll string:", roll_string)
     if re.match(PRIMITIVE_ROLL_PATTERN, roll_string):
         num_dice, num_sides = re.match(PRIMITIVE_ROLL_PATTERN, roll_string).groups()
         if not num_dice:
