@@ -77,7 +77,7 @@ def combine_results(left_result, right_result, operator):
         case '*':
             total = left_total * right_total
         case '/':
-            total = left_total / right_total
+            total = left_total // right_total
 
     return {
         "total": total,
