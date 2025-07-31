@@ -34,15 +34,52 @@ terraform.rc
 # Lambda deployment packages
 *.zip
 
+# Node modules
+node_modules/
+
+# Compiled JavaScript output
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Runtime files
+*.log
+*.pid
+*.seed
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 # IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*.un~
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
 
 # Secrets and keys
 *.pem
