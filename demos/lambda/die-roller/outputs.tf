@@ -1,11 +1,9 @@
-output "die_roller_resource_id" {
-  description = "The ID of the /roll API Gateway resource"
-  value       = aws_api_gateway_resource.die_roller.id
-}
-
-output "die_roller_roll_string_resource_id" {
-  description = "The ID of the /roll/{rollString} API Gateway resource"
-  value       = aws_api_gateway_resource.die_roller_roll_string.id
+output "api_gateway_resources" {
+  description = "The API Gateway resources for die roller endpoints"
+  value = {
+    roll_basic = aws_api_gateway_resource.die_roller
+    roll_with_params = aws_api_gateway_resource.die_roller_roll_string
+  }
 }
 
 output "die_roller_execution_arn" {
