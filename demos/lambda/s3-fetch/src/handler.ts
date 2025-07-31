@@ -1,5 +1,5 @@
 import { S3Client } from '@aws-sdk/client-s3';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 
 // Initialize S3 client - no credentials needed, inherits from execution role
 const s3Client = new S3Client({ 
@@ -7,7 +7,8 @@ const s3Client = new S3Client({
 });
 
 export const handler = async (
-  event: APIGatewayProxyEvent
+  event: APIGatewayProxyEvent,
+  context: Context
 ): Promise<APIGatewayProxyResult> => {
   try {
     return {
@@ -15,7 +16,7 @@ export const handler = async (
       body: JSON.stringify({
         message: 'Hello from S3 Fetch Lambda!',
         timestamp: new Date().toISOString(),
-        requestId: event.requestContext.requestId
+        requestId: event.requestContext?.requestId || context.awsRequestId
       })
     };
   } catch (error) {
