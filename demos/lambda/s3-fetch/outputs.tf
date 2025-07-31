@@ -26,15 +26,15 @@ output "lambda_invoke_arn" {
 }
 
 # API Gateway outputs
-# output "api_resource_id" {
-#   description = "ID of the API Gateway resource for s3-fetch"
-#   value       = aws_api_gateway_resource.s3_fetch_resource.id
-# }
+output "api_resource_id" {
+  description = "ID of the API Gateway resource for s3-fetch"
+  value       = aws_api_gateway_resource.s3_fetch_resource.id
+}
 
-# output "api_resource_path" {
-#   description = "Path of the API Gateway resource"
-#   value       = aws_api_gateway_resource.s3_fetch_resource.path
-# }
+output "api_resource_path" {
+  description = "Path of the API Gateway resource"
+  value       = aws_api_gateway_resource.s3_fetch_resource.path
+}
 
 # IAM role outputs
 output "lambda_role_arn" {
