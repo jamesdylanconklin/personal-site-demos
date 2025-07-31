@@ -197,7 +197,7 @@ resource "aws_api_gateway_integration" "s3_fetch_integration" {
 
 # Lambda permission for API Gateway
 resource "aws_lambda_permission" "api_gateway_invoke" {
-  statement_id  = "AllowExecutionFromAPIGateway"
+  statement_id  = "AllowExecutionFromAPIGateway-${var.environment}-${var.project_name}-${local.common_tags.Component}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.s3_fetch.function_name
   principal     = "apigateway.amazonaws.com"

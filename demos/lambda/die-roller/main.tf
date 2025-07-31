@@ -77,7 +77,7 @@ resource "aws_cloudwatch_log_group" "die_roller" {
 
 # Lambda permission to allow API Gateway to invoke the function
 resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowExecutionFromAPIGateway"
+  statement_id  = "AllowExecutionFromAPIGateway-${var.environment}-${var.project_name}-${local.common_tags.Component}"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.die_roller.function_name
   principal     = "apigateway.amazonaws.com"
