@@ -2,13 +2,6 @@
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 
-# TEMPORARY: AWS provider for testing purposes
-# This should be removed when using this module in production
-# The calling module should configure the AWS provider
-provider "aws" {
-  # Pull region, auth from sso profile or environment
-}
-
 # Common tags for all resources
 locals {
   common_tags = {
