@@ -64,6 +64,10 @@ resource "null_resource" "build_typescript" {
   }
 
   provisioner "local-exec" {
+    command = "cd ${path.module}/src && npm install"
+  }
+
+  provisioner "local-exec" {
     command = "cd ${path.module}/src && npm run build"
   }
 }
