@@ -49,6 +49,19 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "content_bucket_en
   }
 }
 
+# Upload 403.html error page to S3 bucket
+resource "aws_s3_object" "error_403" {
+  bucket       = aws_s3_bucket.content_bucket.bucket
+  key          = "403.html"
+  source       = "${path.module}/assets/403.html"
+  content_type = "text/html"
+  etag         = filemd5("${path.module}/assets/403.html")
+
+  tags = merge(local.common_tags, {
+    Name = "403-error-page"
+  })
+}
+
 # Build TypeScript Lambda function
 resource "null_resource" "build_typescript" {
   triggers = {
