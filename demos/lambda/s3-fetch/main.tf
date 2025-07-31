@@ -58,9 +58,11 @@ resource "aws_s3_object" "error_403" {
 # Build TypeScript Lambda function
 resource "null_resource" "build_typescript" {
   triggers = {
-    handler_hash   = filemd5("${path.module}/src/handler.ts")
-    tsconfig_hash  = filemd5("${path.module}/src/tsconfig.json")
-    package_hash   = filemd5("${path.module}/src/package.json")
+    handler_hash     = filemd5("${path.module}/src/handler.ts")
+    tsconfig_hash    = filemd5("${path.module}/src/tsconfig.json")
+    package_hash     = filemd5("${path.module}/src/package.json")
+    # Force rebuild when node_modules doesn't exist
+    node_modules_check = fileexists("${path.module}/src/node_modules/package-lock.json") ? "exists" : uuid()
   }
 
   provisioner "local-exec" {
