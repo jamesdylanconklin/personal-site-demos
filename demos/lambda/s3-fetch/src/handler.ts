@@ -11,12 +11,26 @@ export const handler = async (
   context: Context
 ): Promise<APIGatewayProxyResult> => {
   try {
+    // Extract objectKey from path parameters
+    const objectKey = event.pathParameters?.objectKey;
+    
+    if (!objectKey) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'Missing objectKey path parameter'
+        })
+      };
+    }
+
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Hello from S3 Fetch Lambda!',
         timestamp: new Date().toISOString(),
-        requestId: event.requestContext?.requestId || context.awsRequestId
+        requestId: event.requestContext?.requestId || context.awsRequestId,
+        objectKey: objectKey,
+        bucketName: process.env.BUCKET_NAME
       })
     };
   } catch (error) {
