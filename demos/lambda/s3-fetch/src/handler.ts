@@ -41,6 +41,7 @@ export const handler = async (
       httpCode = 403;
       contentType = 'text/html';
       body = response403;
+      console.error(`Object Params: ${JSON.stringify(params)}, Client Params: ${JSON.stringify(clientParams)}`);
       if (error instanceof NoSuchKey) {
         console.log(`Object with key ${params.Key} does not exist in bucket ${params.Bucket}.`);
       } else if (error instanceof S3ServiceException) {
