@@ -154,17 +154,10 @@ resource "aws_lambda_function" "s3_fetch" {
   })
 }
 
-# API Gateway resource for the Lambda function
-resource "aws_api_gateway_resource" "s3_fetch_resource" {
-  rest_api_id = var.parent_api_id
-  parent_id   = var.parent_resource_id
-  path_part   = "s3-fetch"
-}
-
 # API Gateway resource for file path (objectKey)
 resource "aws_api_gateway_resource" "s3_fetch_object_key" {
   rest_api_id = var.parent_api_id
-  parent_id   = aws_api_gateway_resource.s3_fetch_resource.id
+  parent_id   = var.parent_resource_id
   path_part   = "{objectKey}"
 }
 
@@ -198,7 +191,7 @@ resource "aws_api_gateway_integration" "s3_fetch_integration" {
 # API Gateway method for GET requests on root resource
 resource "aws_api_gateway_method" "s3_fetch_root_get" {
   rest_api_id   = var.parent_api_id
-  resource_id   = aws_api_gateway_resource.s3_fetch_resource.id
+  resource_id   = var.parent_resource_id
   http_method   = "GET"
   authorization = "NONE"
 }
@@ -206,7 +199,7 @@ resource "aws_api_gateway_method" "s3_fetch_root_get" {
 # API Gateway integration for root resource with default mapping
 resource "aws_api_gateway_integration" "s3_fetch_root_integration" {
   rest_api_id = var.parent_api_id
-  resource_id = aws_api_gateway_resource.s3_fetch_resource.id
+  resource_id = var.parent_resource_id
   http_method = aws_api_gateway_method.s3_fetch_root_get.http_method
 
   integration_http_method = "POST"
