@@ -23,9 +23,3 @@ variable "bucket_name" {
   description = "Name of the S3 bucket to provision if absent and then fetch from"
   type        = string
 }
-
-variable "fallback_object_key" {
-  description = "Default object key to use if not provided in the request"
-  type        = string
-  default     = "403.html"
-}
