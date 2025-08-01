@@ -146,6 +146,7 @@ resource "aws_lambda_function" "s3_fetch" {
   environment {
     variables = {
       BUCKET_NAME = aws_s3_bucket.content_bucket.bucket
+      DEFAULT_KEY = var.fallback_object_key
     }
   }
 
