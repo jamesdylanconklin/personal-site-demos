@@ -26,7 +26,7 @@ output "lambda_invoke_arn" {
 }
 
 # API Gateway outputs
-output "api_gateway_resources" {
+output "api_gateway_resource" {
   description = "The API Gateway resources for s3-fetch endpoints"
   value = aws_api_gateway_resource.s3_fetch_object_key
 }
