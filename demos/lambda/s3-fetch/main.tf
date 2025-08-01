@@ -42,16 +42,16 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "content_bucket_en
   }
 }
 
-# Upload 403.html error page to S3 bucket
-resource "aws_s3_object" "error_403" {
+# Upload index.html to S3 bucket
+resource "aws_s3_object" "index_page" {
   bucket       = aws_s3_bucket.content_bucket.bucket
-  key          = "403.html"
-  source       = "${path.module}/assets/403.html"
+  key          = "index.html"
+  source       = "${path.module}/assets/index.html"
   content_type = "text/html"
-  etag         = filemd5("${path.module}/assets/403.html")
+  etag         = filemd5("${path.module}/assets/index.html")
 
   tags = merge(local.common_tags, {
-    Name = "403-error-page"
+    Name = "index-page"
   })
 }
 
@@ -146,7 +146,6 @@ resource "aws_lambda_function" "s3_fetch" {
   environment {
     variables = {
       BUCKET_NAME = aws_s3_bucket.content_bucket.bucket
-      DEFAULT_KEY = var.fallback_object_key
     }
   }
 
@@ -193,6 +192,42 @@ resource "aws_api_gateway_integration" "s3_fetch_integration" {
 
   request_parameters = {
     "integration.request.path.objectKey" = "method.request.path.objectKey"
+  }
+}
+
+# API Gateway method for GET requests on root resource
+resource "aws_api_gateway_method" "s3_fetch_root_get" {
+  rest_api_id   = var.parent_api_id
+  resource_id   = aws_api_gateway_resource.s3_fetch_resource.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+# API Gateway integration for root resource with default mapping
+resource "aws_api_gateway_integration" "s3_fetch_root_integration" {
+  rest_api_id = var.parent_api_id
+  resource_id = aws_api_gateway_resource.s3_fetch_resource.id
+  http_method = aws_api_gateway_method.s3_fetch_root_get.http_method
+
+  integration_http_method = "POST"
+  type                   = "AWS_PROXY"
+  uri                    = aws_lambda_function.s3_fetch.invoke_arn
+
+  request_templates = {
+    "application/json" = jsonencode({
+      pathParameters = {
+        objectKey = "index.html"
+      }
+      httpMethod = "$context.httpMethod"
+      headers = "$input.params().header"
+      queryStringParameters = "$input.params().querystring"
+      requestContext = {
+        requestId = "$context.requestId"
+        stage = "$context.stage"
+        resourcePath = "$context.resourcePath"
+      }
+      body = "$input.body"
+    })
   }
 }
 
