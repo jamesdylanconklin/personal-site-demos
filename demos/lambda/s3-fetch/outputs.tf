@@ -28,10 +28,7 @@ output "lambda_invoke_arn" {
 # API Gateway outputs
 output "api_gateway_resources" {
   description = "The API Gateway resources for s3-fetch endpoints"
-  value = {
-    base = aws_api_gateway_resource.s3_fetch_resource
-    object_key = aws_api_gateway_resource.s3_fetch_object_key
-  }
+  value = aws_api_gateway_resource.s3_fetch_object_key
 }
 
 # IAM role outputs
