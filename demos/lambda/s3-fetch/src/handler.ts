@@ -19,8 +19,8 @@ export const handler = async (
     var contentType : string = 'application/octet-stream';
     var httpCode : number = 200;
 
-    // Extract objectKey from path parameters
-    var objectKey: string | undefined = event.pathParameters?.objectKey;
+    // Extract objectKey from path parameters, default to index.html if missing
+    var objectKey: string = event.pathParameters?.objectKey || "index.html";
 
     const clientParams : { region?: string } = {}
 
