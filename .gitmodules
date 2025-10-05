@@ -1,6 +1,6 @@
-[submodule "demos/lambda/die-roller/ast-roller"]
-	path = demos/lambda/die-roller/ast-roller
-	url = https://github.com/jamesdylanconklin/ast_roller.git
 [submodule "demos/lambda/die-roller/src/ast-roller"]
 	path = demos/lambda/die-roller/src/ast-roller
+	url = https://github.com/jamesdylanconklin/ast_roller.git
+[submodule "demos/lambda/die-roller/ast_roller"]
+	path = demos/lambda/die-roller/ast_roller
 	url = https://github.com/jamesdylanconklin/ast_roller.git

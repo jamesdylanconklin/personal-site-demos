@@ -8,14 +8,14 @@ echo "Syncing ast_roller from submodule..."
 
 # Update submodule to latest
 git submodule update --init --recursive
-cd ast-roller && git pull origin main && cd ..
+cd ast_roller && git pull origin main && cd ..
 
 # Remove old vendored copies
 rm -rf src/ast_roller
 rm -rf src/ast-roller
 
 # Copy fresh version with correct Python package name
-cp -r ast-roller/src/ast_roller src/
+cp -r ast_roller/src/ast_roller src/
 
 echo "Installing pip dependencies..."
 
