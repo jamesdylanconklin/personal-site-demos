@@ -17,7 +17,7 @@ def lambda_handler(event, _context):
     roll_string = event.get("pathParameters", {}).get("rollString", "1d20")
     
     # URL decode the path parameter since API Gateway passes encoded values
-    rll_string = unquote(roll_string)
+    roll_string = unquote(roll_string)
 
     try:
         # Parse and evaluate using the AST parser
