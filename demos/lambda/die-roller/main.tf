@@ -21,7 +21,7 @@ resource "null_resource" "sync_dependencies" {
   }
 
   provisioner "local-exec" {
-    command     = "./sync-deps.sh"
+    command     = "bash sync-deps.sh"
     working_dir = path.module
   }
 }
