@@ -14,7 +14,8 @@ def lambda_handler(event, _context):
     Processes roll strings from API Gateway path parameters and returns
     either the roll results or validation errors.
     """
-    roll_string = event.get("pathParameters", {}).get("rollString", "1d20")
+    path_parameters = event['pathParameters'] or {}
+    roll_string = path_parameters.get("rollString", "1d20")
     
     # URL decode the path parameter since API Gateway passes encoded values
     roll_string = unquote(roll_string)
