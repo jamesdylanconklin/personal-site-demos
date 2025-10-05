@@ -1,0 +1,8 @@
+{
+  "pathParameters": {
+    "rollString": "2d6+6"
+  },
+  "httpMethod": "GET",
+  "headers": {},
+  "body": null
+}

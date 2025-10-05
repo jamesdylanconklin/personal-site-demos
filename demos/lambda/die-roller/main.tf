@@ -11,11 +11,33 @@ locals {
   }
 }
 
+# Build step: Copy ast_roller dependency from submodule
+# TODO: Replace with PyPI package dependency when ast_roller is published
+resource "null_resource" "sync_dependencies" {
+  triggers = {
+    # Re-run when submodule changes or script changes
+    submodule_commit = data.external.submodule_commit.result.commit
+    sync_script_hash = filesha256("${path.module}/sync-deps.sh")
+  }
+
+  provisioner "local-exec" {
+    command     = "./sync-deps.sh"
+    working_dir = path.module
+  }
+}
+
+# Get current submodule commit to trigger rebuilds
+data "external" "submodule_commit" {
+  program = ["bash", "-c", "cd ${path.module}/ast-roller 2>/dev/null && git rev-parse HEAD || echo 'no-submodule'"]
+}
+
 # Create Lambda deployment package
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "${path.module}/src"
   output_path = "${path.module}/die-roller.zip"
+  
+  depends_on = [null_resource.sync_dependencies]
 }
 
 # Lambda function for die-roller
@@ -24,7 +46,7 @@ resource "aws_lambda_function" "die_roller" {
   function_name    = "${var.project_name}-${var.environment}-die-roller"
   role            = aws_iam_role.die_roller_lambda_role.arn
   handler         = "handler.lambda_handler"
-  runtime         = "python3.11"
+  runtime         = "python3.12"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   depends_on = [
