@@ -28,7 +28,7 @@ resource "null_resource" "sync_dependencies" {
 
 # Get current submodule commit to trigger rebuilds
 data "external" "submodule_commit" {
-  program = ["bash", "-c", "cd ${path.module}/ast-roller 2>/dev/null && git rev-parse HEAD || echo 'no-submodule'"]
+  program = ["bash", "-c", "cd ${path.module}/ast-roller 2>/dev/null && echo '{\"commit\":\"'$(git rev-parse HEAD)'\"}' || echo '{\"commit\":\"no-submodule\"}'"]
 }
 
 # Create Lambda deployment package
