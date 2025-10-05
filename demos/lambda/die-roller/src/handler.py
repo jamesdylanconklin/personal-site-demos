@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+from urllib.parse import unquote
 
 # Import the AST parser
 from ast_roller import parser, transformer
@@ -14,6 +15,9 @@ def lambda_handler(event, _context):
     either the roll results or validation errors.
     """
     roll_string = event.get("pathParameters", {}).get("rollString", "1d20")
+    
+    # URL decode the path parameter since API Gateway passes encoded values
+    rll_string = unquote(roll_string)
 
     try:
         # Parse and evaluate using the AST parser
