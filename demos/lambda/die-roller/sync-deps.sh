@@ -16,4 +16,14 @@ rm -rf src/ast_roller
 # Copy fresh version
 cp -r ast-roller/src/ast_roller src/
 
-echo "✅ ast_roller synced successfully"
+echo "Installing pip dependencies..."
+
+# Install pip dependencies into src/ for Lambda packaging
+# Remove any existing dependencies first
+find src/ -name "lark*" -type d -exec rm -rf {} + 2>/dev/null || true
+find src/ -name "*.dist-info" -type d -exec rm -rf {} + 2>/dev/null || true
+
+# Install dependencies
+pip install -r src/requirements.txt -t src/ --no-deps
+
+echo "✅ ast_roller synced and dependencies installed successfully"
