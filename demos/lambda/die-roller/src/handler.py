@@ -20,6 +20,13 @@ def lambda_handler(event, _context):
     # URL decode the path parameter since API Gateway passes encoded values
     roll_string = unquote(roll_string)
 
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+        'Access-Control-Allow-Methods': 'GET,OPTIONS',
+        'Content-Type': 'application/json'
+    }
+
     try:
         # Parse and evaluate using the AST parser
         parsed_tree = parser.parse(roll_string)
@@ -34,11 +41,13 @@ def lambda_handler(event, _context):
         
         return {
             "statusCode": 200,
+            "headers": headers,
             "body": json.dumps(result)
         }
     except Exception as e:
         return {
             "statusCode": 400,
+            "headers": headers,
             "body": json.dumps({"error": str(e)})
         }
 
