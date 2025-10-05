@@ -15,6 +15,21 @@ locals {
 # TODO: Replace with PyPI package dependency when ast_roller is published
 resource "null_resource" "sync_dependencies" {
   triggers = {
+    # Force rebuild every time for now
+    timestamp = timestamp()
+    sync_script_hash = filesha256("${path.module}/sync-deps.sh")
+  }
+
+  provisioner "local-exec" {
+    command     = "bash sync-deps.sh"
+    working_dir = path.module
+  }
+}
+
+# Build step: Copy ast_roller dependency from submodule
+# TODO: Replace with PyPI package dependency when ast_roller is published
+resource "null_resource" "sync_dependencies" {
+  triggers = {
     # Re-run when submodule changes or script changes
     submodule_commit = data.external.submodule_commit.result.commit
     sync_script_hash = filesha256("${path.module}/sync-deps.sh")
