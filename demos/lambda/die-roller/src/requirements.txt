@@ -1,0 +1,3 @@
+# TODO: Remove lark dependency when switching to published ast_roller package
+# Currently needed because we vendor ast_roller code without its pyproject.toml dependencies
+lark==1.1.9

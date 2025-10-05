@@ -30,11 +30,27 @@ credentials
 dist/
 build/
 
+# SAM CLI artifacts
+.aws-sam/
+
+# Vendored dependencies (copied from submodules)
+# TODO: Remove when switching to PyPI packages
+src/ast_roller/
+
 # Python artifacts (for Lambda source)
 __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
 
 # IDE and editor files
 .vscode/
@@ -42,6 +58,7 @@ __pycache__/
 *.swp
 *.swo
 *~
+*.un~
 
 # OS-specific files
 .DS_Store
